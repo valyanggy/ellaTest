@@ -1,0 +1,261 @@
+{
+    "nodes":[
+        {
+            "id": "Cakes",
+            "group": "Cakes",
+            "radius": 20,
+            "type": "center_node",
+            "index": 0
+
+        },
+        {
+            "id": "Cake_01",
+            "group": "Cakes",
+            "radius": 13,
+            "type": "left_loop",
+            "index": 1
+        },
+        {
+            "id": "Cake_02",
+            "group": "Cakes",
+            "radius": 13,
+            "type": "left_loop",
+            "index": 2
+        },
+        {
+            "id": "Cake_03",
+            "group": "Cakes",
+            "radius": 13,
+            "type": "left_loop",
+            "index": 3
+
+        },
+        {
+            "id": "Cake_04",
+            "group": "Cakes",
+            "radius": 13,
+            "type": "left_loop",
+            "index": 4
+        },
+        {
+            "id": "Cake_05",
+            "group": "Cakes",
+            "radius": 13,
+            "type": "left_loop",
+            "index": 5
+        },
+        {
+            "id": "Cake_06",
+            "group": "Cakes",
+            "radius": 13,
+            "type": "left_loop",
+            "index": 6
+
+        },
+        {
+            "id": "Cake_07",
+            "group": "Cakes",
+            "radius": 13,
+            "type": "right_loop",
+            "index": 7
+        },
+        {
+            "id": "Cake_08",
+            "group": "Cakes",
+            "radius": 13,
+            "type": "right_loop",
+            "index": 8
+        },
+        {
+            "id": "Cake_09",
+            "group": "Cakes",
+            "radius": 13,
+            "type": "right_loop",
+            "index": 9
+        },
+        {
+            "id": "Cake_10",
+            "group": "Cakes",
+            "radius": 13,
+            "type": "right_loop",
+            "index": 10
+        },
+        {
+            "id": "Cake_11",
+            "group": "Cakes",
+            "radius": 13,
+            "type": "right_loop",
+            "index": 11
+        },
+        {
+            "id": "Cake_12",
+            "group": "Cakes",
+            "radius": 13,
+            "type": "right_loop",
+            "index": 12
+        },
+        {
+            "id": "Cake_13",
+            "group": "Cakes",
+            "radius": 13,
+            "type": "left_tail",
+            "index": 13
+        },
+        {
+            "id": "Cake_14",
+            "group": "Cakes",
+            "radius": 13,
+            "type": "left_tail",
+            "index": 14
+        },
+        {
+            "id": "Cake_15",
+            "group": "Cakes",
+            "radius": 13,
+            "type": "left_tail",
+            "index": 15
+        },
+        {
+            "id": "Cake_16",
+            "group": "Cakes",
+            "radius": 13,
+            "type": "left_tail",
+            "index": 16
+        },
+        {
+            "id": "Cake_17",
+            "group": "Cakes",
+            "radius": 13,
+            "type": "right_tail",
+            "index": 17
+        },
+        {
+            "id": "Cake_18",
+            "group": "Cakes",
+            "radius": 13,
+            "type": "right_tail",
+            "index": 18
+        },
+        {
+            "id": "Cake_19",
+            "group": "Cakes",
+            "radius": 13,
+            "type": "right_tail",
+            "index": 19
+        },
+        {
+            "id": "Cake_20",
+            "group": "Cakes",
+            "radius": 13,
+            "type": "right_tail",
+            "index": 20
+        }
+
+
+    ],
+    "links":[
+        {
+            "source": "Cakes",
+            "target": "Cake_01",
+            "value": 2
+        },
+        {
+            "source": "Cake_01",
+            "target": "Cake_02",
+            "value": 2
+        },
+        {
+            "source": "Cake_02",
+            "target": "Cake_03",
+            "value": 2
+        },
+        {
+            "source": "Cake_03",
+            "target": "Cake_04",
+            "value": 2
+        },
+        {
+            "source": "Cake_05",
+            "target": "Cake_06",
+            "value": 2
+        },
+        {
+            "source": "Cake_06",
+            "target": "Cakes",
+            "value": 2
+        },
+        {
+            "source": "Cakes",
+            "target": "Cake_07",
+            "value": 2
+        },
+        {
+            "source": "Cake_07",
+            "target": "Cake_08",
+            "value": 2
+        },
+        {
+            "source": "Cake_08",
+            "target": "Cake_09",
+            "value": 2
+        },
+        {
+            "source": "Cake_09",
+            "target": "Cake_10",
+            "value": 2
+        },
+        {
+            "source": "Cake_10",
+            "target": "Cake_11",
+            "value": 2
+        },
+        {
+            "source": "Cake_11",
+            "target": "Cake_12",
+            "value": 2
+        },
+        {
+            "source": "Cakes",
+            "target": "Cake_13",
+            "value": 2
+        },
+        {
+            "source": "Cake_13",
+            "target": "Cake_14",
+            "value": 2
+        },
+        {
+            "source": "Cake_14",
+            "target": "Cake_15",
+            "value": 2
+        },
+        {
+            "source": "Cake_15",
+            "target": "Cake_16",
+            "value": 2
+        },
+        {
+            "source": "Cakes",
+            "target": "Cake_17",
+            "value": 2
+        },
+        {
+            "source": "Cake_17",
+            "target": "Cake_18",
+            "value": 2
+        },
+        {
+            "source": "Cake_18",
+            "target": "Cake_19",
+            "value": 2
+        },
+        {
+            "source": "Cake_19",
+            "target": "Cake_20",
+            "value": 2
+        }
+        
+
+
+    ]
+}

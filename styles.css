@@ -1,0 +1,153 @@
+body{
+  margin: 0;
+  padding: 0%;
+}
+
+.kode-mono-regular {
+  font-family: "Kode Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+
+
+.tooltip {
+  position: absolute;
+  /* text-align: center; */
+ width: 100%;
+  pointer-events: none; /* Don't block mouse events */
+
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0px;
+}
+
+
+.tooltip{
+  padding: 10px;
+  /* background: rgb(255, 255, 255); */
+  /* border: 1px solid #E519E5; */
+  border-radius: 3px;
+  opacity: 0;
+  transition: opacity 0.1s;
+  font-family: "Kode Mono", monospace;
+  letter-spacing: 1px;
+  font-size: 10px;
+  z-index: -20;
+}
+
+.tooltip img{
+  max-width: 95%;
+  max-height: 95%;
+  height: auto; /* Maintain aspect ratio */
+  object-fit: cover; /* Cover the container without stretching */
+  
+}
+
+/* .tooltip.center-node{
+  font-size: 100px;
+} */
+
+.links line {
+  stroke: rgb(255, 255, 255);
+  stroke-opacity: 0;
+}
+
+/* .nodes circle {
+  fill: #69b3a2;
+  stroke: #000000;
+  stroke-width: 1.5px;
+} */
+.node {
+  fill: #E519E5; /* Default node color */
+  r:23;
+  /* box-shadow: 0px 4px 10px 0px #E519E5; */
+  /* filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.5)); */
+  
+}
+.center-node {
+  fill: #E50C89; /* Center node color */
+  r: 25; /* Center node radius */
+  z-index: 1000;
+}
+
+
+.node.group-0 {
+  fill: #e5d70c; /* Group 0 node color */
+  box-shadow: 0px 4px 22.3px 0px #e5d70c;
+}
+.group-0.center-node {
+  fill: #e50c0c; /* Group 0 center node color */
+}
+
+
+.node.group-1 {
+  fill: #0ce5d7; /* Group 1 node color */
+}
+.group-1.center-node {
+  fill: #0c8be5; /* Group 1 center node color */
+}
+
+.node.group-2 {
+  fill: #0c882b; /* Group 2 node color */
+}
+.group-2.center-node {
+  fill: #2a441f; /* Group 2 center node color */
+}
+
+.node.group-3 {
+  fill: #0ce5a0; /* Group 3 node color */
+} 
+.group-3.center-node {
+  fill: #1a0ce5; /* Group 3 center node color */
+}
+
+.node.group-4 {
+  fill: #ab0ce5; /* Group 4 node color */
+}
+.group-4.center-node {
+  fill: #eceaff; /* Group 4 center node color */
+}
+
+.node.group-5 {
+  fill: #e5800c; /* Group 5 node color */
+}
+.group-5.center-node {
+  fill: #e5d70c; /* Group 5 center node color */
+}
+
+.node.group-6 {
+  fill: #1f4662; /* Group 6 node color */
+}
+.group-6.center-node {
+  fill: #0c1ee5; /* Group 6 center node color */
+}
+
+
+
+
+
+
+
+.node:hover {
+  fill: #ffffff; /* Hover node color */
+  r:20;
+  z-index: 1000;
+}
+
+/* #tooltip{
+  top: 0;
+  margin: auto;
+  pointer-events:none ;
+  text-align: left;
+} */
+
+
+
+
+
+
+svg {
+  /* border: 1px solid hwb(0 8% 87%); */
+}
