@@ -1,17 +1,31 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Multiple Bow Knots</title>
-    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-    <link rel="stylesheet" href="styles.css" />
-    <!-- <script defer src="bowknot.js"></script> -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400..700&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <svg id="graph" width="1700" height="1000"></svg>
-    <!-- <div id="tooltip" class="tooltip" style="opacity:0; position: absolute;"></div> -->
-    <script src="shapeScript.js"></script>
-  </body>
+
+<head>
+  <title>Ella Varr Burgess</title>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- <script defer src="bowknot.js"></script> -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400..700&display=swap" rel="stylesheet">
+  <script src="loader.js"></script>
+</head>
+
+<body>
+  <svg id="graph" width="1800" height="900"></svg>
+  <!-- <div id="tooltip" class="tooltip" style="opacity:0; position: absolute;"></div> -->
+  <div class="gui">
+    <label for="radiusSlider">Coquette: </label>
+    <span id="radiusValue">25</span>
+    <input type="range" id="radiusSlider" min="25" max="53" value="25">
+  </div>
+  <div id="loader-wrapper">
+    <span style="font-size: .5em;">Welcome to </span>Ella Varr Burgess <br><br>
+    <div id="loader-percentage">0%</div>
+  </div>
+  
+  <script src="shapeScript.js"></script>
+</body>
+
 </html>

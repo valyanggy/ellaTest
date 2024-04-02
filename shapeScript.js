@@ -4,7 +4,7 @@ const customTitleIndex = { index: 0 }; // Object to keep track of the index
 const nodeInfoIndex = { index: 0 }; // Object to keep track of the index
 
 const xOffset = 5; // Horizontal offset for each new bow knot
-const structureTypes = ["bowknot", "bowknot",  "bowknot", "sunflower","ops", "bowknot", "bowknot", "sunflower", "bowknot"];
+const structureTypes = ["bowknot", "sunflower", "ops", "bowknot", "bowknot", "sunflower", "ops", "bowknot", "bowknot", "sunflower", "bowknot"];
 const numberOfKnots = 7; // Define how many knots you want
 const numberOfStructures = 2; // Define how many structures you want
 const initialX = 500; // Starting X position for the first knot
@@ -58,12 +58,12 @@ const customTitles = [
 ]
 
 const nodeInfo = [
-    { title:"Cake_01", imageUrl:"img/IMG_7182 copy.jpg"},
-    { title:"Cake_02", imageUrl:"img/0FE977DF-B77D-42DE-AE0B-8BD1672B7345_Original.jpg"},
-    { title:"Cake_03", imageUrl:"img/IMG_0516.jpg"},
-    { title:"Cake_04", imageUrl:"img/IMG_1314.jpg"},
-    { title:"Cake_05", imageUrl:"img/IMG_2142_Original.jpg"},
-    { title:"Cake_06", imageUrl:"img/IMG_3275_Original copy.jpg"},
+    { title: "Cake_01", imageUrl: "img/IMG_7182 copy.jpg" },
+    { title: "Cake_02", imageUrl: "img/0FE977DF-B77D-42DE-AE0B-8BD1672B7345_Original.jpg" },
+    { title: "Cake_03", imageUrl: "img/IMG_0516.jpg" },
+    { title: "Cake_04", imageUrl: "img/IMG_1314.jpg" },
+    { title: "Cake_05", imageUrl: "img/IMG_2142_Original.jpg" },
+    { title: "Cake_06", imageUrl: "img/IMG_3275_Original copy.jpg" },
 ]
 
 
@@ -76,15 +76,15 @@ function createStructure(centerX, centerY, groupId, customTitleIndex, customTitl
         // console.log("Current Index:", nodeInfoIndex.index, "Total Length:", nodeInfo.length);
         if (nodeInfoIndex.index < nodeInfo.length) {
             // console.log("Using Node Info:", nodeInfo[nodeInfoIndex.index]);
-          return nodeInfo[nodeInfoIndex.index++];
-        //   console.log("Node Info:", nodeInfo);
-         
-        } else {
-          return { title: `Default Title ${groupId}`, imageUrl: "img/ella_default.png"};
-        }
-      }
+            return nodeInfo[nodeInfoIndex.index++];
+            //   console.log("Node Info:", nodeInfo);
 
-      function getNextTitle() {
+        } else {
+            return { title: `Default Title ${groupId}`, imageUrl: "img/ella_default.png" };
+        }
+    }
+
+    function getNextTitle() {
         if (customTitleIndex.index < customTitles.length) {
             return customTitles[customTitleIndex.index++];
             // console.log("Custom Title:", customTitles);
@@ -109,7 +109,7 @@ function createStructure(centerX, centerY, groupId, customTitleIndex, customTitl
                 const info = getNextNodeInfo();
                 nodes.push({ id: nodeId, group: groupId, title: info.title, image: info.imageUrl });
                 // console.log("Node img info:", info.imageUrl);
-        
+
                 if (i === 1) {
                     links.push({ source: `center_${groupId}`, target: nodeId });
                 } else {
@@ -126,7 +126,7 @@ function createStructure(centerX, centerY, groupId, customTitleIndex, customTitl
                 const nodeId = `${side}Tail${i}_${groupId}`;
                 const info = getNextNodeInfo();
 
-        
+
                 nodes.push({ id: nodeId, group: groupId, title: info.title, image: info.imageUrl });
 
                 if (i === 1) {
@@ -143,7 +143,7 @@ function createStructure(centerX, centerY, groupId, customTitleIndex, customTitl
         for (let i = 1; i <= numPetals; i++) {
             const nodeId = `node${i}_${groupId}`;
             const info = getNextNodeInfo();
-            nodes.push({ id: nodeId, group: groupId, title: info.title, image: info.imageUrl});
+            nodes.push({ id: nodeId, group: groupId, title: info.title, image: info.imageUrl });
             links.push({ source: `center_${groupId}`, target: nodeId });
         }
     } else if (structureType === 'ops') {
@@ -162,7 +162,7 @@ function createStructure(centerX, centerY, groupId, customTitleIndex, customTitl
 
     // Common center node for both structures
     const info = getNextNodeInfo();
-    nodes.push({ id: `center_${groupId}`, group: groupId, title: info.title, image: info.imageUrl});
+    nodes.push({ id: `center_${groupId}`, group: groupId, title: info.title, image: info.imageUrl });
 
 
     return { nodes, links };
@@ -252,7 +252,7 @@ const node = svg
     .data(allNodes)
     .enter()
     .append("circle")
-    // .attr("r", 10)
+    .attr("r", 25)
     // .attr("fill", (d) => d.group === undefined ? "#E519E5" : "#1f77b4")
     .attr("class", d => d.id.includes('center') ? `node center-node group-${d.group}` : `node group-${d.group}`)
     .call(
@@ -328,9 +328,9 @@ node
             .style("position", "absolute")
             .style("left", 0 + "px")
             .style("top", 0 + "px")
-            .style("width", window.innerWidth+ "px")
-            .style("height", window.innerHeight  + "px")
-              .style("opacity", 1);
+            .style("width", window.innerWidth + "px")
+            .style("height", window.innerHeight + "px")
+            .style("opacity", 1);
 
 
 
@@ -341,5 +341,20 @@ node
         tooltip.transition().duration(500).style("opacity", 0);
     });
 
+
+// Select the slider element
+const radiusSlider = d3.select("#radiusSlider");
+
+// Event listener for the slider
+radiusSlider.on("input", function () {
+    const newRadius = +this.value;
+    d3.select("#radiusValue").text(newRadius); // Update the displayed value
+
+    // Update the radius of the nodes
+    d3.selectAll(".node")
+        .attr("r", newRadius);
+
+    console.log("New Radius:", newRadius);
+});
 
 invalidation.then(() => simulation.stop());

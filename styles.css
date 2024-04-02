@@ -1,14 +1,61 @@
-body{
-  margin: 0;
-  padding: 0%;
-}
-
 .kode-mono-regular {
   font-family: "Kode Mono", monospace;
   font-optical-sizing: auto;
   font-weight: 500;
   font-style: normal;
 }
+
+@font-face {
+  font-family: 'junicodeitalic';
+  src: url('Junicode-Italic-webfont.eot');
+  src: url('Junicode-Italic-webfont.eot?#iefix') format('embedded-opentype'),
+       url('Junicode-Italic-webfont.woff2') format('woff2'),
+       url('Junicode-Italic-webfont.woff') format('woff'),
+       url('Junicode-Italic-webfont.ttf') format('truetype'),
+       url('Junicode-Italic-webfont.svg#junicodeitalic') format('svg');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+body{
+  margin: 0;
+  padding: 0%;
+  /* font-family: "Kode Mono", monospace; */
+  font-family: 'junicodeitalic';
+  letter-spacing: 0px;
+  font-size: 15px;
+}
+
+#loader-wrapper{
+  display: flex;
+  flex-direction: column;
+  font-size: 2em;
+}
+
+#loader-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensures the loader is above other elements */
+}
+
+#loader-percentage {
+  /* font-size: 2em; */
+  animation: fadeIn 1s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 
 
 .tooltip {
@@ -31,9 +78,6 @@ body{
   border-radius: 3px;
   opacity: 0;
   transition: opacity 0.1s;
-  font-family: "Kode Mono", monospace;
-  letter-spacing: 1px;
-  font-size: 10px;
   z-index: -20;
 }
 
@@ -43,6 +87,15 @@ body{
   height: auto; /* Maintain aspect ratio */
   object-fit: cover; /* Cover the container without stretching */
   
+}
+
+.gui{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#radiusSlider {
+  margin: 10px;
 }
 
 /* .tooltip.center-node{
@@ -61,7 +114,7 @@ body{
 } */
 .node {
   fill: #E519E5; /* Default node color */
-  r:23;
+  /* r:25; */
   /* box-shadow: 0px 4px 10px 0px #E519E5; */
   /* filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.5)); */
   
