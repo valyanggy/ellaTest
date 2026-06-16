@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Junicode Italic";
+  src: url("/Junicode-Italic-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@theme {
+  --font-junicode: "Junicode Italic", serif;
+}
+
+@layer base {
+  :root {
+    color: #000;
+    background: #fff;
+    font-family: "Kode Mono", monospace;
+    font-size: 13px;
+    letter-spacing: 0;
+  }
+
+  body {
+    min-width: 320px;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  button,
+  input {
+    font: inherit;
+  }
+
+  strong {
+    font-weight: 400;
+  }
+}
+
+@layer components {
+  .is-about-muted {
+    opacity: 0.22;
+    filter: blur(2px);
+    transition: opacity 500ms ease, filter 500ms ease;
+  }
+
+  .about-center {
+    isolation: isolate;
+  }
+
+  .about-focus-field {
+    position: absolute;
+    inset: -56px -72px;
+    z-index: -1;
+    background: rgb(255 255 255 / 0.28);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    mask-image: radial-gradient(ellipse at center, #000 0%, #000 45%, transparent 76%);
+    pointer-events: none;
+  }
+
+  .about-center a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .about-line {
+    display: flex;
+    justify-content: center;
+    min-height: 1.3em;
+    margin: 0;
+  }
+
+  .about-line .slot-text {
+    justify-content: center;
+  }
+
+  .graph-links line {
+    stroke: #fff;
+    stroke-opacity: 0;
+  }
+
+  .graph-node {
+    cursor: grab;
+    transition: fill 160ms ease, r 160ms ease;
+  }
+
+  .graph-node:hover {
+    fill: #fff;
+  }
+
+  .graph-node:hover,
+  .graph-node:focus,
+  svg.is-about-active .graph-node {
+    fill: #fff;
+    stroke: #111;
+    stroke-width: 1px;
+    stroke-dasharray: 20 2;
+  }
+
+  .image-tooltip {
+    position: fixed;
+    z-index: 15;
+    display: grid;
+    width: min(360px, 80vw);
+    gap: 4px;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(14px, 14px);
+    transition: opacity 120ms ease;
+  }
+
+  .image-tooltip strong,
+  .image-tooltip span {
+    width: max-content;
+    max-width: 100%;
+    background: #fff;
+    padding: 2px 4px;
+  }
+
+  .image-tooltip img {
+    max-width: min(360px, 80vw);
+    max-height: 50vh;
+    object-fit: contain;
+    background: #fff;
+  }
+}

@@ -357,4 +357,6 @@ radiusSlider.on("input", function () {
     console.log("New Radius:", newRadius);
 });
 
-invalidation.then(() => simulation.stop());
+if (typeof invalidation !== "undefined") {
+    invalidation.then(() => simulation.stop());
+}

@@ -1,0 +1,29 @@
+{
+  "name": "ella-site-rebuild",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "studio": "sanity dev",
+    "studio:deploy": "sanity deploy",
+    "sanity:login": "sanity login",
+    "sanity:import": "sanity datasets import sanity/import/ella-import.ndjson production --replace"
+  },
+  "dependencies": {
+    "@sanity/client": "^7.8.2",
+    "@sanity/vision": "^4.18.0",
+    "@tailwindcss/vite": "^4.3.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "d3": "^7.9.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "sanity": "^4.18.0",
+    "slot-text": "^0.3.1",
+    "styled-components": "^6.1.19",
+    "tailwindcss": "^4.3.0",
+    "vite": "^7.0.0"
+  }
+}
