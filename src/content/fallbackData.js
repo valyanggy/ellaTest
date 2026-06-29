@@ -1,8 +1,62 @@
+function colorFillImageUrl(index, seed = 0) {
+  const hue = (index * 47 + seed * 23 + 18) % 360;
+  const background = `hsl(${hue} 86% 58%)`;
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500">
+      <rect width="1200" height="1500" fill="${background}"/>
+    </svg>
+  `;
+
+  return `data:image/svg+xml,${encodeURIComponent(svg.replace(/\s+/g, " ").trim())}`;
+}
+
 export const fallbackProjects = [
+  {
+    _id: "fallback-makeup-hair",
+    title: "Makeup Hair",
+    year: "2024",
+    filterItem: "Makeup Hair",
+    clusterShape: "bow",
+    clusterColor: "#0c8be5",
+    counterNodeColor: "#005f9e",
+    normalNodeColor: "#0c8be5",
+    ghostNodeColor: "#9bd8ff",
+    medium: "Makeup, hair, photography",
+    credits: "Test filler content",
+    tags: ["Makeup Hair"],
+    images: Array.from({ length: 14 }, (_, index) => ({
+      title: `Color ${String(index + 1).padStart(2, "0")}`,
+      imageUrl: colorFillImageUrl(index)
+    }))
+  },
+  {
+    _id: "fallback-nailed-jpeg",
+    title: "Nailed.jpeg",
+    year: "2024",
+    filterItem: "Nailed.jpeg",
+    clusterShape: "bow",
+    clusterColor: "#ff4fb8",
+    counterNodeColor: "#e50c89",
+    normalNodeColor: "#ff4fb8",
+    ghostNodeColor: "#ffc1e4",
+    medium: "Nail art, image archive",
+    credits: "Test filler content",
+    tags: ["Nailed.jpeg"],
+    images: Array.from({ length: 32 }, (_, index) => ({
+      title: `Nailed ${String(index + 1).padStart(2, "0")}`,
+      imageUrl: colorFillImageUrl(index, 8)
+    }))
+  },
   {
     _id: "fallback-bowl",
     title: "Bowl",
     year: "2024",
+    filterItem: "Random",
+    clusterShape: "flower",
+    clusterColor: "#e5800c",
+    counterNodeColor: "#000000",
+    normalNodeColor: "#e5800c",
+    ghostNodeColor: "#ffd19b",
     medium: "Photography",
     tags: ["Food"],
     images: [
@@ -16,6 +70,12 @@ export const fallbackProjects = [
     _id: "fallback-beach",
     title: "Beach",
     year: "2024",
+    filterItem: "Random",
+    clusterShape: "worm",
+    clusterColor: "#0ce5d7",
+    counterNodeColor: "#2a441f",
+    normalNodeColor: "#0ce5d7",
+    ghostNodeColor: "#9bf7ef",
     medium: "Photography",
     tags: ["Photography"],
     images: [
@@ -31,6 +91,12 @@ export const fallbackProjects = [
     _id: "fallback-cakes",
     title: "Cakes",
     year: "2021",
+    filterItem: "Cakes",
+    clusterShape: "bow",
+    clusterColor: "#e5d70c",
+    counterNodeColor: "#e50c0c",
+    normalNodeColor: "#e5d70c",
+    ghostNodeColor: "#f3ec87",
     medium: "Flour, wheat, eggs, sugar",
     tags: ["Food", "Photography"],
     images: [
