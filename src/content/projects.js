@@ -2,10 +2,13 @@ import { fallbackProjects } from "./fallbackData";
 import { createClient } from "@sanity/client";
 
 const CONTENT_ENDPOINT = "https://alex_is_disconnected-ella_burgess.web.val.run/";
+const OWNED_SANITY_PROJECT_ID = "2r3rfhwf";
+const OWNED_SANITY_DATASET = "production";
 const LEGACY_SANITY_PROJECT_ID = "hsvfeudq";
 const LEGACY_SANITY_DATASET = "ella-burgess";
-const SANITY_PROJECT_ID = import.meta.env.VITE_SANITY_PROJECT_ID;
-const SANITY_DATASET = import.meta.env.VITE_SANITY_DATASET || "production";
+const SANITY_PROJECT_ID = import.meta.env.VITE_SANITY_PROJECT_ID || OWNED_SANITY_PROJECT_ID;
+const SANITY_DATASET = import.meta.env.VITE_SANITY_DATASET || OWNED_SANITY_DATASET;
+const IS_DEV = import.meta.env.DEV;
 const FILLER_PROJECTS = [
   { category: "Makeup Hair", id: "fallback-makeup-hair" },
   { category: "Nailed.jpeg", id: "fallback-nailed-jpeg" }
@@ -246,5 +249,5 @@ export async function loadProjects() {
     console.warn("Could not load legacy content proxy.", error);
   }
 
-  return withFillerProjects(normalizeProjects(fallbackProjects));
+  return IS_DEV ? withFillerProjects(normalizeProjects(fallbackProjects)) : [];
 }
