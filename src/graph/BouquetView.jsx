@@ -14,6 +14,9 @@ import { useProjectGraph } from "./graphData";
 const ABOUT_HIT_RADIUS_SCALE = 1.8;
 const TOOLTIP_OFFSET = 14;
 const TOOLTIP_VIEWPORT_GUTTER = 16;
+const TOOLTIP_SHOW_DELAY = 180;
+const TOOLTIP_FADE_OUT = 360;
+const TOOLTIP_FADE_IN = 180;
 
 function getVisibleGroups(nodes, activeCategory) {
   if (!activeCategory) {
@@ -81,17 +84,36 @@ function positionTooltip(event, tooltip) {
   tooltip.style("left", `${left}px`).style("top", `${top}px`);
 }
 
-function showTooltip(event, tooltip, data) {
-  tooltip
-    .style("opacity", 1)
+function showTooltipPreview(state, tooltipLayer, data, zIndex) {
+  const tooltip = tooltipLayer
+    .append("div")
+    .attr("class", "image-tooltip")
+    .style("z-index", zIndex)
+    .style("opacity", 0)
     .html(getTooltipHtml(data));
-  positionTooltip(event, tooltip);
 
+  state.tooltip = tooltip;
+  positionTooltip(state.event, tooltip);
+  tooltip.transition().duration(TOOLTIP_FADE_IN).style("opacity", 1);
   const tooltipImage = tooltip.select("img").node();
 
   if (tooltipImage) {
-    tooltipImage.onload = () => positionTooltip(event, tooltip);
+    tooltipImage.onload = () => positionTooltip(state.event, tooltip);
   }
+}
+
+function hideTooltipPreview(state) {
+  if (state.showTimer) {
+    window.clearTimeout(state.showTimer);
+    state.showTimer = null;
+  }
+
+  if (!state.tooltip) {
+    return;
+  }
+
+  state.tooltip.interrupt().transition().duration(TOOLTIP_FADE_OUT).style("opacity", 0).remove();
+  state.tooltip = null;
 }
 
 function getNodeColor(data) {
@@ -161,7 +183,9 @@ export function BouquetView({ activeCategory, projects, radius, aboutAnimation, 
     }
 
     const svg = d3.select(svgRef.current);
-    const tooltip = d3.select(tooltipRef.current);
+    const tooltipLayer = d3.select(tooltipRef.current);
+    const tooltipPreviews = new Map();
+    let tooltipZIndex = 15;
     const width = window.innerWidth;
     const height = window.innerHeight;
     const simulationNodes = nodes.map((node) => {
@@ -211,6 +235,58 @@ export function BouquetView({ activeCategory, projects, radius, aboutAnimation, 
       aboutOpen,
       currentForceSettings: forceSettings
     };
+
+    function beginTooltipHover(event, data) {
+      const previousState = tooltipPreviews.get(data.id);
+
+      if (previousState) {
+        hideTooltipPreview(previousState);
+      }
+
+      const state = {
+        event,
+        showTimer: null,
+        tooltip: null
+      };
+
+      state.showTimer = window.setTimeout(() => {
+        state.showTimer = null;
+        showTooltipPreview(state, tooltipLayer, data, ++tooltipZIndex);
+      }, TOOLTIP_SHOW_DELAY);
+      tooltipPreviews.set(data.id, state);
+    }
+
+    function moveTooltipHover(event, data) {
+      const state = tooltipPreviews.get(data.id);
+
+      if (!state) {
+        return;
+      }
+
+      state.event = event;
+
+      if (state.tooltip) {
+        positionTooltip(event, state.tooltip);
+      }
+    }
+
+    function endTooltipHover(data) {
+      const state = tooltipPreviews.get(data.id);
+
+      if (!state) {
+        return;
+      }
+
+      tooltipPreviews.delete(data.id);
+      hideTooltipPreview(state);
+    }
+
+    function hideAllTooltipPreviews() {
+      tooltipPreviews.forEach(hideTooltipPreview);
+      tooltipPreviews.clear();
+    }
+
+    graphRef.current.hideAllTooltipPreviews = hideAllTooltipPreviews;
 
     const link = svg.append("g").attr("class", "graph-links").selectAll("line").data(simulationLinks).join("line");
     const halo = svg
@@ -263,14 +339,14 @@ export function BouquetView({ activeCategory, projects, radius, aboutAnimation, 
           return;
         }
 
-        showTooltip(event, tooltip, data);
+        beginTooltipHover(event, data);
       })
-      .on("mousemove", (event) => {
+      .on("mousemove", (event, data) => {
         if (graphRef.current?.interactionsDisabled) {
           return;
         }
 
-        positionTooltip(event, tooltip);
+        moveTooltipHover(event, data);
       })
       .on("mouseleave", (event) => {
         const targetNode = d3.select(event.currentTarget);
@@ -291,7 +367,7 @@ export function BouquetView({ activeCategory, projects, radius, aboutAnimation, 
             .attr("r", 0);
         }
 
-        tooltip.style("opacity", 0);
+        endTooltipHover(targetData);
       })
       .call(
         d3
@@ -349,14 +425,14 @@ export function BouquetView({ activeCategory, projects, radius, aboutAnimation, 
           return;
         }
 
-        showTooltip(event, tooltip, data);
+        beginTooltipHover(event, data);
       })
-      .on("mousemove", (event) => {
+      .on("mousemove", (event, data) => {
         if (graphRef.current?.interactionsDisabled) {
           return;
         }
 
-        positionTooltip(event, tooltip);
+        moveTooltipHover(event, data);
       })
       .on("mouseleave", (event) => {
         const targetData = d3.select(event.currentTarget).datum();
@@ -377,7 +453,7 @@ export function BouquetView({ activeCategory, projects, radius, aboutAnimation, 
             .attr("r", 0);
         }
 
-        tooltip.style("opacity", 0);
+        endTooltipHover(targetData);
       })
       .call(
         d3
@@ -420,9 +496,11 @@ export function BouquetView({ activeCategory, projects, radius, aboutAnimation, 
     simulation.on("tick", renderGraph);
 
     return () => {
+      hideAllTooltipPreviews();
       simulation.stop();
       graphRef.current = null;
       svg.selectAll("*").remove();
+      tooltipLayer.selectAll("*").remove();
     };
   }, [links, nodes, onSelect, radius]);
 
@@ -447,7 +525,7 @@ export function BouquetView({ activeCategory, projects, radius, aboutAnimation, 
     const visibleGroups = graph.currentVisibleGroups;
     graph.interactionsDisabled = aboutOpen;
     d3.select(svgRef.current).classed("is-about-active", aboutOpen);
-    d3.select(tooltipRef.current).style("opacity", 0);
+    graph.hideAllTooltipPreviews?.();
     graph.nodeSelection?.classed("is-about-hovered", false).classed("is-hovered", false).style("fill", null);
     graph.haloSelection?.transition().duration(aboutOpen ? 220 : 420).style("opacity", 0).attr("r", 0);
     graph.hitTargetSelection
@@ -515,7 +593,7 @@ export function BouquetView({ activeCategory, projects, radius, aboutAnimation, 
       onPointerUp={handlePointerUp}
     >
       <svg ref={svgRef} id="graph" className="block h-screen w-screen" />
-      <div ref={tooltipRef} className="image-tooltip" />
+      <div ref={tooltipRef} className="image-tooltip-layer" />
     </section>
   );
 }

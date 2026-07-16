@@ -60,7 +60,7 @@ export function AboutCenter({ aboutAnimation, aboutOpen }) {
   return (
     <section
       className={[
-        "about-center fixed inset-0 z-30 font-kode text-[10px] leading-[1.15]",
+        "about-center fixed inset-0 z-30 font-kode text-[12px] leading-[1.15]",
         isPresent ? "opacity-100" : "opacity-0 pointer-events-none",
         textOpen ? "is-open" : ""
       ].join(" ")}

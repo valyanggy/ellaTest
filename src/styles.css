@@ -34,7 +34,7 @@
     color: #000;
     background: #fff;
     font-family: "Kode Mono", monospace;
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 0;
   }
 
@@ -312,7 +312,7 @@
 
   .about-wordmark {
     font-family: "Times New Roman", Times, serif;
-    font-size: 14px;
+    font-size: 16px;
     font-style: italic;
     letter-spacing: -0.02em;
   }
@@ -329,7 +329,7 @@
     padding: 0 5px;
     color: rgb(0 0 0 / 0.18);
     font-family: "Times New Roman", Times, serif;
-    font-size: 12px;
+    font-size: 14px;
     font-style: normal;
     font-weight: 400;
     letter-spacing: -0.02em;
@@ -383,6 +383,12 @@
     isolation: isolate;
   }
 
+  @media (max-width: 767px) {
+    .media-viewer {
+      touch-action: pan-y;
+    }
+  }
+
   .media-viewer-image {
     width: auto;
     height: auto;
@@ -428,14 +434,14 @@
 
   .calendar-year-label {
     font-family: "Times New Roman", Times, serif;
-    font-size: 24px;
+    font-size: 26px;
     font-style: italic;
     letter-spacing: -0.02em;
   }
 
   .calendar-year-count {
     font-family: "Kode Mono", monospace;
-    font-size: 8px;
+    font-size: 10px;
     letter-spacing: 0;
   }
 
@@ -611,7 +617,7 @@
   }
 
   .about-credit span {
-    font-size: 8px;
+    font-size: 10px;
   }
 
   .about-credit strong {
@@ -619,7 +625,7 @@
   }
 
   .about-rights {
-    font-size: 8px;
+    font-size: 10px;
   }
 
   @media not all and (min-width: 48rem) {
@@ -743,7 +749,7 @@
     background: rgb(255 255 255 / 0.72);
     box-shadow: 0 10px 28px rgb(0 0 0 / 0.06);
     color: #a0a0a0;
-    font-size: 8px;
+    font-size: 10px;
     line-height: 1;
     opacity: 0;
     transform: translateX(-50%) translateY(0px);
@@ -835,9 +841,15 @@
     box-shadow: none;
   }
 
+  .image-tooltip-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 15;
+    pointer-events: none;
+  }
+
   .image-tooltip {
     position: fixed;
-    z-index: 15;
     display: grid;
     width: min(360px, 80vw);
     gap: 4px;

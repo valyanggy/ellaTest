@@ -12,7 +12,7 @@ export function TopNav({ activeCategory, disabled, onCategory }) {
   return (
     <nav
       className={[
-        "filter-nav fixed left-1/2 top-4 z-50 w-[calc(100vw-180px)] max-w-[600px] -translate-x-1/2 font-kode text-[10px] font-normal max-md:top-14 max-md:w-[calc(100vw-20px)] max-md:max-w-[360px]",
+        "filter-nav fixed left-1/2 top-4 z-50 w-[calc(100vw-180px)] max-w-[600px] -translate-x-1/2 font-kode text-[12px] font-normal max-md:top-14 max-md:w-[calc(100vw-20px)] max-md:max-w-[360px]",
         filtersOpen ? "is-open" : "",
         disabled ? "is-about-muted pointer-events-none" : ""
       ].join(" ")}
