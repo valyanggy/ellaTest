@@ -385,22 +385,33 @@
 
   @media (max-width: 767px) {
     .media-viewer {
-      touch-action: pan-y;
+      touch-action: none;
     }
   }
 
   .media-viewer-image {
     width: auto;
     height: auto;
-    max-height: calc(100dvh - 152px);
+    max-height: 100%;
   }
 
   .media-viewer-video {
     width: min(100%, calc((100dvh - 152px) * 16 / 9));
     aspect-ratio: 16 / 9;
-    max-height: calc(100dvh - 152px);
+    max-height: 100%;
     border: 0;
     background: #000;
+  }
+
+  .media-viewer-stage {
+    top: calc(64px + var(--media-viewer-heading-height, 0px) + 16px);
+    bottom: max(72px, calc(var(--media-viewer-notes-height, 0px) + 44px));
+  }
+
+  @media (max-width: 767px) {
+    .media-viewer-stage {
+      bottom: max(96px, calc(var(--media-viewer-notes-height, 0px) + 36px));
+    }
   }
 
   .media-viewer-zone {
@@ -458,7 +469,6 @@
   }
 
   .calendar-item-title {
-    text-align: right;
     overflow-wrap: anywhere;
   }
 
@@ -581,7 +591,7 @@
 
   .about-description {
     justify-self: center;
-    width: 300px;
+    width: min(520px, calc(100vw - 56px));
     margin: 0;
     text-align: center;
   }
@@ -592,6 +602,7 @@
     justify-content: center;
     gap: 46px;
     margin-top: 128px;
+    font-size: 12px;
     text-align: left;
   }
 
@@ -613,6 +624,7 @@
   .about-credit {
     justify-self: center;
     margin-top: 54px;
+    font-size: 10px;
     text-align: center;
   }
 
@@ -629,12 +641,23 @@
   }
 
   @media not all and (min-width: 48rem) {
+    .view-shell-bouquet #graph {
+      transform-origin: 50% 50%;
+      transition: transform 720ms cubic-bezier(0.873, -0.003, 0, 1.002);
+    }
+
+    .view-shell-bouquet.is-about-open #graph {
+      transform: translateY(396px) scale(0.96);
+    }
+
     .about-typeset {
+      width: calc(100vw - 20px);
       min-height: 320px;
     }
 
     .about-description {
-      width: min(300px, calc(100vw - 56px));
+      width: calc(100vw - 20px);
+      font-size: 14px;
     }
 
     .about-contact-grid {

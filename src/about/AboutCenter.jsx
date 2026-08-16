@@ -60,25 +60,24 @@ export function AboutCenter({ aboutAnimation, aboutOpen }) {
   return (
     <section
       className={[
-        "about-center fixed inset-0 z-30 font-kode text-[12px] leading-[1.15]",
+        "about-center fixed inset-0 z-30 font-kode text-[14px] leading-[1.15]",
         isPresent ? "opacity-100" : "opacity-0 pointer-events-none",
         textOpen ? "is-open" : ""
       ].join(" ")}
       aria-hidden={!isPresent}
     >
       <div className="about-typeset absolute left-1/2 top-1/2 grid w-[min(520px,calc(100vw-44px))] -translate-x-1/2 -translate-y-1/2">
-        <p className="about-copy about-description">
-          {slot("Ella Varr Burgess is a talented ")}
-          <a className="about-plain-link" href="https://www.ellavarrburgess.com/" aria-label="Multimedia artist">
-            {slot("multimedia")}
-            <br />
-            {slot("artist")}
-          </a>
-          {slot(", a ")}
-          <a className="about-plain-link" href="https://www.instagram.com/varraway/">
-            {slot("pâtissier")}
-          </a>
-          {slot(", and a good friend.")}
+        <p className="about-copy about-description" aria-label={ABOUT_PROFILE.description}>
+          {ABOUT_PROFILE.descriptionLines.map((line) => (
+            <span className="block max-md:hidden" key={line} aria-hidden="true">
+              {slot(line)}
+            </span>
+          ))}
+          {ABOUT_PROFILE.descriptionMobileLines.map((line) => (
+            <span className="hidden max-md:block" key={line} aria-hidden="true">
+              {slot(line)}
+            </span>
+          ))}
         </p>
 
         <div className="about-copy about-contact-grid">

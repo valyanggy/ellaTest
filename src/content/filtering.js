@@ -1,3 +1,5 @@
+import { CATEGORY_MEMBERS } from "../config/site";
+
 const FILTER_ALIASES = {
   "oakwood photo series": "pics or it didn t happen"
 };
@@ -13,7 +15,8 @@ function normalizeFilterValue(value) {
 }
 
 export function projectMatchesCategory(project, category) {
-  const normalizedCategory = normalizeFilterValue(category);
+  const categoryMembers = CATEGORY_MEMBERS[category] || [category];
+  const normalizedMembers = categoryMembers.map(normalizeFilterValue);
   const searchableValues = [
     project.filterItem,
     project.title,
@@ -22,5 +25,7 @@ export function projectMatchesCategory(project, category) {
     ...(project.media || []).map((item) => (item.type === "video" ? "Video Work" : ""))
   ].map(normalizeFilterValue);
 
-  return searchableValues.some((value) => value === normalizedCategory || value.includes(normalizedCategory));
+  return normalizedMembers.some((member) =>
+    searchableValues.some((value) => value === member || value.includes(member))
+  );
 }

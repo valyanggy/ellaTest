@@ -11,6 +11,8 @@ import { projectMatchesCategory } from "./content/filtering";
 import { loadProjects } from "./content/projects";
 import { BouquetView } from "./graph/BouquetView";
 
+const INTRO_HOLD_MS = 600;
+
 export function App() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -45,7 +47,7 @@ export function App() {
 
     const introTimer = window.setTimeout(() => {
       setIntroComplete(true);
-    }, 1800);
+    }, INTRO_HOLD_MS);
 
     return () => {
       window.clearTimeout(introTimer);

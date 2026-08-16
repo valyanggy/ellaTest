@@ -12,6 +12,7 @@ import {
 import { useProjectGraph } from "./graphData";
 
 const ABOUT_HIT_RADIUS_SCALE = 1.8;
+const MOBILE_ABOUT_NODE_SCALE = 0.72;
 const TOOLTIP_OFFSET = 14;
 const TOOLTIP_VIEWPORT_GUTTER = 16;
 const TOOLTIP_SHOW_DELAY = 180;
@@ -36,9 +37,9 @@ function isLinkVisible(data, visibleGroups) {
   return isNodeVisible(data.source, visibleGroups) && isNodeVisible(data.target, visibleGroups);
 }
 
-function getNodeRadius(data, radius, aboutOpen) {
+function getNodeRadius(data, radius, aboutOpen, aboutNodeScale = 1) {
   const defaultRadius = data.center ? radius * 1.07 : radius;
-  return aboutOpen ? defaultRadius * ABOUT_NODE_SCALE : defaultRadius;
+  return aboutOpen ? defaultRadius * ABOUT_NODE_SCALE * aboutNodeScale : defaultRadius;
 }
 
 function getHitRadius(data, radius, aboutOpen) {
@@ -152,7 +153,7 @@ function applyFilterState(graph, activeCategory) {
   graph.nodeSelection
     .style("display", (data) => (isNodeVisible(data, visibleGroups) ? null : undefined))
     .style("pointer-events", (data) => (isNodeVisible(data, visibleGroups) ? "auto" : "none"))
-    .attr("r", (data) => getNodeRadius(data, graph.radius, graph.aboutOpen))
+    .attr("r", (data) => getNodeRadius(data, graph.radius, graph.aboutOpen, graph.aboutNodeScale))
     .style("display", (data) => (isNodeVisible(data, visibleGroups) ? null : "none"));
   graph.hitTargetSelection
     .style("display", (data) => (isNodeVisible(data, visibleGroups) ? null : undefined))
@@ -188,6 +189,7 @@ export function BouquetView({ activeCategory, projects, radius, aboutAnimation, 
     let tooltipZIndex = 15;
     const width = window.innerWidth;
     const height = window.innerHeight;
+    const aboutNodeScale = width < 768 ? MOBILE_ABOUT_NODE_SCALE : 1;
     const simulationNodes = nodes.map((node) => {
       return { ...node };
     });
@@ -195,7 +197,7 @@ export function BouquetView({ activeCategory, projects, radius, aboutAnimation, 
     const forceSettings = getBouquetForceSettings(aboutOpen, width, height);
 
     svg.selectAll("*").remove();
-    const viewBoxScale = width < 720 ? 1.49 : 0.97;
+    const viewBoxScale = width < 720 ? 1.12 : 0.97;
     svg
       .attr("viewBox", [(-width * viewBoxScale) / 2, (-height * viewBoxScale) / 2, width * viewBoxScale, height * viewBoxScale])
       .attr("preserveAspectRatio", "xMidYMid meet");
@@ -233,6 +235,7 @@ export function BouquetView({ activeCategory, projects, radius, aboutAnimation, 
       xForce,
       yForce,
       aboutOpen,
+      aboutNodeScale,
       currentForceSettings: forceSettings
     };
 
@@ -305,7 +308,7 @@ export function BouquetView({ activeCategory, projects, radius, aboutAnimation, 
       .selectAll("circle")
       .data(simulationNodes)
       .join("circle")
-      .attr("r", (data) => (data.center ? radius * 1.07 : radius))
+      .attr("r", (data) => getNodeRadius(data, radius, aboutOpen, aboutNodeScale))
       .attr("fill", getNodeColor)
       .style("--node-color", getNodeColor)
       .attr(
@@ -535,7 +538,7 @@ export function BouquetView({ activeCategory, projects, radius, aboutAnimation, 
     graph.nodeSelection
       ?.transition()
       .duration(aboutOpen ? 420 : 520)
-      .attr("r", (data) => (isNodeVisible(data, visibleGroups) ? getNodeRadius(data, radius, aboutOpen) : 0));
+      .attr("r", (data) => (isNodeVisible(data, visibleGroups) ? getNodeRadius(data, radius, aboutOpen, graph.aboutNodeScale) : 0));
     const targetForceSettings = getBouquetForceSettings(aboutOpen, graph.width, graph.height);
     const startForceSettings = graph.currentForceSettings || getBouquetForceSettings(!aboutOpen, graph.width, graph.height);
     const duration = aboutOpen ? aboutAnimation.graphEnterDuration : aboutAnimation.graphExitDuration;
@@ -587,7 +590,10 @@ export function BouquetView({ activeCategory, projects, radius, aboutAnimation, 
 
   return (
     <section
-      className="view-shell view-shell-bouquet fixed inset-0 z-10 overflow-hidden"
+      className={[
+        "view-shell view-shell-bouquet fixed inset-0 z-10 overflow-hidden",
+        aboutOpen ? "is-about-open" : ""
+      ].join(" ")}
       aria-label="Bouquet project map"
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
