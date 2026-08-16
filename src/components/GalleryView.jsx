@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { CalendarCursorTrail } from "./CalendarCursorTrail";
 
 function getGalleryItems(projects, { reverseOrder = false } = {}) {
@@ -63,7 +63,11 @@ function getVimeoEmbedUrl(url) {
 
 export function GalleryView({ activeCategory, allProjects, projects, selected, onSelect, onSelectProject }) {
   const swipeRef = useRef(null);
+  const headingRef = useRef(null);
+  const notesRef = useRef(null);
   const suppressClickUntilRef = useRef(0);
+  const [headingHeight, setHeadingHeight] = useState(0);
+  const [notesHeight, setNotesHeight] = useState(0);
   const galleryItems = useMemo(() => getGalleryItems(projects, { reverseOrder: true }), [projects]);
   const viewerItems = useMemo(() => getGalleryItems(allProjects, { reverseOrder: true }), [allProjects]);
   const calendarSections = useMemo(
@@ -116,15 +120,18 @@ export function GalleryView({ activeCategory, allProjects, projects, selected, o
     const deltaX = event.clientX - swipe.startX;
     const deltaY = event.clientY - swipe.startY;
     const duration = performance.now() - swipe.startTime;
-    const isHorizontalSwipe = Math.abs(deltaX) >= 50 && Math.abs(deltaX) > Math.abs(deltaY) * 1.25;
+    const horizontalDistance = Math.abs(deltaX);
+    const verticalDistance = Math.abs(deltaY);
+    const isHorizontalSwipe = horizontalDistance >= 50 && horizontalDistance > verticalDistance * 1.25;
+    const isVerticalSwipe = verticalDistance >= 50 && verticalDistance > horizontalDistance * 1.25;
 
-    if (!isHorizontalSwipe || duration > 800) {
+    if ((!isHorizontalSwipe && !isVerticalSwipe) || duration > 800) {
       return;
     }
 
     suppressClickUntilRef.current = performance.now() + 500;
 
-    if (deltaX < 0) {
+    if ((isHorizontalSwipe && deltaX < 0) || (isVerticalSwipe && deltaY < 0)) {
       showNext();
     } else {
       showPrevious();
@@ -167,6 +174,29 @@ export function GalleryView({ activeCategory, allProjects, projects, selected, o
     };
   }, [selectedItem, selectedIndex, viewerItems, onSelect, onSelectProject]);
 
+  useLayoutEffect(() => {
+    const heading = headingRef.current;
+    const notes = notesRef.current;
+
+    if (!selectedItem || !heading || !notes) {
+      setHeadingHeight(0);
+      setNotesHeight(0);
+      return undefined;
+    }
+
+    const updateViewerBounds = () => {
+      setHeadingHeight(heading.offsetHeight);
+      setNotesHeight(notes.offsetHeight);
+    };
+    updateViewerBounds();
+
+    const resizeObserver = new ResizeObserver(updateViewerBounds);
+    resizeObserver.observe(heading);
+    resizeObserver.observe(notes);
+
+    return () => resizeObserver.disconnect();
+  }, [selectedItem]);
+
   return (
     <>
       <CalendarCursorTrail active={!selectedItem} />
@@ -184,12 +214,11 @@ export function GalleryView({ activeCategory, allProjects, projects, selected, o
                   type="button"
                   onClick={() => onSelect(item.projectIndex, item.imageIndex)}
                 >
-                  <span className="mb-3 justify-self-end font-rag text-[12px] leading-none">{String(item.mediaIndex).padStart(2, "0")}</span>
+                  <span className="mb-3 justify-self-end font-rag text-[12px] leading-none opacity-25">{String(item.mediaIndex).padStart(2, "0")}</span>
                   <img className="calendar-thumb-image" src={item.image.imageUrl} alt={item.image.alt || item.image.title} loading="lazy" />
-                  <span className="calendar-item-meta mt-5 grid grid-cols-[auto_auto] justify-between gap-x-2 text-[12px] leading-[1.15]">
+                  <span className="calendar-item-meta mt-5 grid gap-y-0 text-[12px] leading-[1.15]">
                     <span>IMG_{String(item.mediaIndex).padStart(4, "0")}</span>
-                    <span className="calendar-item-title">{item.image.title || item.project.title}</span>
-                    {item.project.medium && <span className="col-span-2 opacity-50">{item.project.medium}</span>}
+                    <span className="calendar-item-title">{item.project.title}</span>
                   </span>
                 </button>
               ))}
@@ -201,6 +230,10 @@ export function GalleryView({ activeCategory, allProjects, projects, selected, o
         <section
           className="media-viewer fixed inset-0 z-[15] h-[100dvh] overflow-hidden bg-white text-black"
           aria-label="Media viewer"
+          style={{
+            "--media-viewer-heading-height": `${headingHeight}px`,
+            "--media-viewer-notes-height": `${notesHeight}px`
+          }}
           onClickCapture={handleViewerClickCapture}
           onPointerCancel={() => {
             swipeRef.current = null;
@@ -208,12 +241,21 @@ export function GalleryView({ activeCategory, allProjects, projects, selected, o
           onPointerDown={handleViewerPointerDown}
           onPointerUp={handleViewerPointerUp}
         >
-          <div className="media-viewer-heading fixed left-1/2 top-16 z-20 -translate-x-1/2 text-center font-kode text-[12px] font-normal leading-[1.15]">
+          <button
+            className="fixed left-7 top-[50px] z-20 flex h-[44px] w-[44px] cursor-pointer items-center justify-start border-0 bg-transparent p-0 font-kode text-[24px] leading-none text-black max-md:left-5"
+            type="button"
+            aria-label="Back to project view"
+            onClick={() => onSelect(null, null)}
+          >
+            ←
+          </button>
+
+          <div ref={headingRef} className="media-viewer-heading fixed left-1/2 top-16 z-20 -translate-x-1/2 text-center font-kode text-[12px] font-normal leading-[1.15]">
             <div>{selectedItem.project.title}</div>
             {selectedItem.project.year && <div>{selectedItem.project.year}</div>}
           </div>
 
-          <div className="media-viewer-stage pointer-events-none fixed bottom-18 left-0 right-0 top-20 z-10 grid place-items-end justify-items-center px-[22vw] max-md:bottom-24 max-md:px-6">
+          <div className="media-viewer-stage pointer-events-none fixed left-0 right-0 z-10 grid place-items-end justify-items-center px-[22vw] max-md:px-6">
             {selectedItem.image.type === "video" ? (
               <iframe
                 className="media-viewer-video pointer-events-auto"
@@ -234,28 +276,33 @@ export function GalleryView({ activeCategory, allProjects, projects, selected, o
           <button className="media-viewer-zone media-viewer-zone-left" type="button" aria-label="Previous image" onClick={showPrevious} />
           <button className="media-viewer-zone media-viewer-zone-right" type="button" aria-label="Next image" onClick={showNext} />
 
-          <dl className="media-viewer-notes fixed bottom-7 left-7 z-20 grid max-w-[320px] grid-cols-[48px_1fr] gap-x-3 gap-y-0 font-kode text-[12px] leading-[1.15] max-md:bottom-5 max-md:left-5 max-md:max-w-[240px]">
-            {selectedItem.project.medium && (
-              <>
-                <dt>Media</dt>
-                <dd>{selectedItem.project.medium}</dd>
-              </>
-            )}
-            {selectedItem.project.credits && (
-              <>
-                <dt>Credit</dt>
-                <dd>{selectedItem.project.credits}</dd>
-              </>
-            )}
-            {selectedItem.image.title && (
-              <>
-                <dt>Title</dt>
-                <dd>{selectedItem.image.title}</dd>
-              </>
-            )}
-          </dl>
+          <div ref={notesRef} className="media-viewer-notes fixed bottom-7 left-7 z-20 grid w-max max-w-[60vw] grid-cols-[48px_1fr] gap-x-3 gap-y-0 font-kode text-[12px] leading-[1.15] max-md:bottom-5 max-md:left-5 max-md:right-5 max-md:w-auto max-md:max-w-none">
+            <div className="col-span-2 mb-3 hidden max-md:block">
+              {String(selectedIndex + 1).padStart(3, "0")} /{viewerItems.length}
+            </div>
+            <dl className="contents">
+              {selectedItem.image.title && (
+                <>
+                  <dt>Title</dt>
+                  <dd>{selectedItem.image.title}</dd>
+                </>
+              )}
+              {selectedItem.project.medium && (
+                <>
+                  <dt className={selectedItem.image.title ? "mt-[1.15em]" : ""}>Media</dt>
+                  <dd className={selectedItem.image.title ? "mt-[1.15em]" : ""}>{selectedItem.project.medium}</dd>
+                </>
+              )}
+              {selectedItem.project.credits && (
+                <>
+                  <dt className={selectedItem.image.title && !selectedItem.project.medium ? "mt-[1.15em]" : ""}>Credit</dt>
+                  <dd className={selectedItem.image.title && !selectedItem.project.medium ? "mt-[1.15em]" : ""}>{selectedItem.project.credits}</dd>
+                </>
+              )}
+            </dl>
+          </div>
 
-          <div className="fixed bottom-7 right-7 z-20 font-kode text-[12px] leading-none max-md:bottom-5 max-md:right-5">
+          <div className="fixed bottom-7 right-7 z-20 font-kode text-[12px] leading-none max-md:hidden">
             {String(selectedIndex + 1).padStart(3, "0")} /{viewerItems.length}
           </div>
         </section>

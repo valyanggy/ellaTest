@@ -1,29 +1,22 @@
 export const CATEGORIES = [
   "2D work",
-  "Cakes",
-  "House Lamp",
-  "Makeup Hair",
-  "Nailed.jpeg",
-  "Pics-Or-It-Didn't-Happen",
-  "Random",
-  "Teeth",
-  "Thesis Progress",
-  "Time Ripens All Things",
-  "Video Work"
+  "Installation",
+  "Makeup, Hair and Nails",
+  "3D work"
 ];
+
+export const CATEGORY_MEMBERS = {
+  "2D work": ["2D work", "TwoDee", "Printmaking"],
+  Installation: ["Pics-Or-It-Didn't-Happen", "Pics Or It Didn't Happen", "Time Ripens All Things"],
+  "Makeup, Hair and Nails": ["Makeup Hair", "Makeup+Hair", "Nailed.jpeg"],
+  "3D work": ["House Lamp", "Skin", "Thesis Progress"]
+};
 
 export const CATEGORY_COLORS = {
   "2D work": "#e519e5",
-  Cakes: "#e5d70c",
-  "House Lamp": "#0c882b",
-  "Makeup Hair": "#0c8be5",
-  "Nailed.jpeg": "#ff4fb8",
-  "Pics-Or-It-Didn't-Happen": "#0ce5a0",
-  Random: "#e5800c",
-  Teeth: "#d9d9d9",
-  "Thesis Progress": "#98e59b",
-  "Time Ripens All Things": "#737300",
-  "Video Work": "#4b0ce5"
+  Installation: "#0ce5a0",
+  "Makeup, Hair and Nails": "#0c8be5",
+  "3D work": "#0c882b"
 };
 
 export const GROUP_COLORS = [
@@ -37,15 +30,24 @@ export const GROUP_COLORS = [
 ];
 
 export const ABOUT_TEXT_LINES = [
-  "Ella Varr Burgess is a multimedia artist,",
-  "a pâtissier, and a good friend.",
+  "Ella Varr - a multimedia artist based in New York City.",
+  "A restless mind and her protean creation.",
   "ellavarr@gmail.com",
   "@varraway",
   "Site by Come On, Computer."
 ];
 
 export const ABOUT_PROFILE = {
-  description: "Ella Varr Burgess is a talented multimedia artist, a pâtissier, and a good friend.",
+  description: "Ella Varr - a multimedia artist based in New York City. A restless mind and her protean creation.",
+  descriptionLines: [
+    "Ella Varr - a multimedia artist based in New York City.",
+    "A restless mind and her protean creation."
+  ],
+  descriptionMobileLines: [
+    "Ella Varr - a multimedia artist",
+    "based in New York City. A restless",
+    "mind and her protean creation."
+  ],
   instagram: "@varraway",
   instagramUrl: "https://www.instagram.com/varraway/",
   instagramAlt: "@nailed.jpeg",
