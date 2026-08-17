@@ -21,7 +21,7 @@ export function App() {
   const [radius, setRadius] = useState(20);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [aboutAnimation, setAboutAnimation] = useState(DEFAULT_ABOUT_ANIMATION);
-  const [activeCategory, setActiveCategory] = useState(null);
+  const [activeCategories, setActiveCategories] = useState([]);
   const [selected, setSelected] = useState({ projectId: null, imageIndex: null });
   const aboutReturnViewRef = useRef("bouquet");
 
@@ -55,8 +55,12 @@ export function App() {
   }, [loading]);
 
   const filteredProjects = useMemo(
-    () => (activeCategory ? projects.filter((project) => projectMatchesCategory(project, activeCategory)) : projects),
-    [activeCategory, projects]
+    () => (
+      activeCategories.length > 0
+        ? projects.filter((project) => activeCategories.some((category) => projectMatchesCategory(project, category)))
+        : projects
+    ),
+    [activeCategories, projects]
   );
 
   const selectedProjectIndex = selected.projectId !== null ? projects.findIndex((project) => project.id === selected.projectId) : -1;
@@ -89,7 +93,15 @@ export function App() {
   }, [isImageOpen]);
 
   const handleCategory = (category) => {
-    setActiveCategory((currentCategory) => (currentCategory === category ? null : category));
+    setActiveCategories((currentCategories) => {
+      if (!category) {
+        return [];
+      }
+
+      return currentCategories.includes(category)
+        ? currentCategories.filter((currentCategory) => currentCategory !== category)
+        : [...currentCategories, category];
+    });
     setAboutOpen(false);
     setSelected({ projectId: null, imageIndex: null });
   };
@@ -178,13 +190,13 @@ export function App() {
       ) : (
         <div className="app-shell-fade">
           <AboutPanel aboutOpen={aboutOpen} onToggle={handleAboutToggle} />
-          {!isImageOpen && <TopNav activeCategory={activeCategory} disabled={aboutOpen} onCategory={handleCategory} />}
+          {!isImageOpen && <TopNav activeCategories={activeCategories} disabled={aboutOpen} onCategory={handleCategory} />}
           <AboutCenter aboutAnimation={aboutAnimation} aboutOpen={aboutOpen && view === "bouquet"} />
           <div className="view-transition-plane">
-            <div className="view-content-transition" key={view === "bouquet" ? "bouquet" : `${view}-${activeCategory || "all"}`}>
+            <div className="view-content-transition" key={view}>
               {view === "bouquet" ? (
                 <BouquetView
-                  activeCategory={activeCategory}
+                  activeCategories={activeCategories}
                   projects={projects}
                   radius={radius}
                   aboutAnimation={aboutAnimation}
@@ -193,10 +205,10 @@ export function App() {
                   onSelect={handleBouquetSelect}
                 />
               ) : filteredProjects.length === 0 ? (
-                <EmptyFilterState activeCategory={activeCategory} />
+                <EmptyFilterState activeCategories={activeCategories} />
               ) : (
                 <GalleryView
-                  activeCategory={activeCategory}
+                  activeCategories={activeCategories}
                   allProjects={projects}
                   projects={filteredProjects}
                   selected={selectedImage?.image ? selectedImage : null}

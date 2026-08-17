@@ -61,7 +61,7 @@ function getVimeoEmbedUrl(url) {
   return `https://player.vimeo.com/video/${match[1]}`;
 }
 
-export function GalleryView({ activeCategory, allProjects, projects, selected, onSelect, onSelectProject }) {
+export function GalleryView({ activeCategories, allProjects, projects, selected, onSelect, onSelectProject }) {
   const swipeRef = useRef(null);
   const headingRef = useRef(null);
   const notesRef = useRef(null);
@@ -71,8 +71,12 @@ export function GalleryView({ activeCategory, allProjects, projects, selected, o
   const galleryItems = useMemo(() => getGalleryItems(projects, { reverseOrder: true }), [projects]);
   const viewerItems = useMemo(() => getGalleryItems(allProjects, { reverseOrder: true }), [allProjects]);
   const calendarSections = useMemo(
-    () => (activeCategory ? [{ year: activeCategory, items: galleryItems }] : getCalendarYears(galleryItems)),
-    [activeCategory, galleryItems]
+    () => (
+      activeCategories.length > 0
+        ? [{ sectionKey: "filtered", year: activeCategories.join(" + "), items: galleryItems }]
+        : getCalendarYears(galleryItems)
+    ),
+    [activeCategories, galleryItems]
   );
   const selectedIndex = selected
     ? viewerItems.findIndex((item) => item.project.id === selected.projectId && item.imageIndex === selected.imageIndex)
@@ -199,10 +203,10 @@ export function GalleryView({ activeCategory, allProjects, projects, selected, o
 
   return (
     <>
-      <CalendarCursorTrail active={!selectedItem} />
+      <CalendarCursorTrail active={!selectedItem} persistent />
       <section className="view-shell view-shell-calendar grid gap-22 px-5 pb-28 pt-44 text-[12px] leading-[1.1] max-md:gap-16 max-md:px-4 max-md:pt-36" aria-label="Calendar gallery">
-        {calendarSections.map(({ year, items }) => (
-          <article className="grid gap-18 max-md:gap-10" key={year}>
+        {calendarSections.map(({ sectionKey, year, items }) => (
+          <article className="grid gap-18 max-md:gap-10" key={sectionKey || year}>
             <h2 className="m-0 text-center font-normal leading-none">
               <span className="calendar-year-label">{year}</span> <span className="calendar-year-count">({items.length})</span>
             </h2>

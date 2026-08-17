@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { CATEGORIES, CATEGORY_COLORS } from "../config/site";
 
-export function TopNav({ activeCategory, disabled, onCategory }) {
+export function TopNav({ activeCategories, disabled, onCategory }) {
   const [filtersOpen, setFiltersOpen] = useState(false);
 
   const handleCategoryClick = (category) => {
     onCategory(category);
-    setFiltersOpen(false);
   };
 
   return (
@@ -29,7 +28,7 @@ export function TopNav({ activeCategory, disabled, onCategory }) {
         Filter ({filtersOpen ? "-" : "+"})
       </button>
       <div className="filter-list">
-        {activeCategory && (
+        {activeCategories.length > 0 && (
           <button
             key="all"
             style={{ "--filter-color": "#000" }}
@@ -49,11 +48,11 @@ export function TopNav({ activeCategory, disabled, onCategory }) {
           style={{ "--filter-color": CATEGORY_COLORS[category] }}
           className={[
             "filter-item cursor-pointer border-0 text-black transition",
-            activeCategory === category ? "is-active" : ""
+            activeCategories.includes(category) ? "is-active" : ""
           ].join(" ")}
           type="button"
           disabled={disabled}
-          aria-pressed={activeCategory === category}
+          aria-pressed={activeCategories.includes(category)}
           onClick={() => handleCategoryClick(category)}
         >
           <span className="filter-item-dot" aria-hidden="true" />

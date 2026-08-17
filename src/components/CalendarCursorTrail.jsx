@@ -5,7 +5,7 @@ const TRAIL_MIN_DISTANCE = 8;
 const TRAIL_MIN_INTERVAL = 12;
 const TRAIL_MIN_VELOCITY = 0.9;
 
-export function CalendarCursorTrail({ active, dotScale = 1, trailDurationMs = 680 }) {
+export function CalendarCursorTrail({ active, dotScale = 1, trailDurationMs = 680, persistent = false }) {
   const containerRef = useRef(null);
   const cursorRef = useRef(null);
   const lastMoveRef = useRef({ time: 0, x: null, y: null });
@@ -60,11 +60,17 @@ export function CalendarCursorTrail({ active, dotScale = 1, trailDurationMs = 68
       dot.style.width = `${size}px`;
       dot.style.height = `${size}px`;
       dot.style.background = colorPalette[colorIndex % colorPalette.length];
-      dot.style.animationDuration = `${trailDurationMs}ms`;
+      if (persistent) {
+        dot.style.animation = "none";
+      } else {
+        dot.style.animationDuration = `${trailDurationMs}ms`;
+      }
       colorIndex += 1;
 
       container.appendChild(dot);
-      dot.addEventListener("animationend", () => dot.remove(), { once: true });
+      if (!persistent) {
+        dot.addEventListener("animationend", () => dot.remove(), { once: true });
+      }
     };
 
     const hideCursor = () => {
@@ -83,7 +89,7 @@ export function CalendarCursorTrail({ active, dotScale = 1, trailDurationMs = 68
       lastMoveRef.current = { time: 0, x: null, y: null };
       lastTrailRef.current = { time: 0, x: null, y: null };
     };
-  }, [active, colorPalette, dotScale, trailDurationMs]);
+  }, [active, colorPalette, dotScale, persistent, trailDurationMs]);
 
   return (
     <>

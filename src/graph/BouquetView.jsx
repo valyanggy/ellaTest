@@ -19,13 +19,17 @@ const TOOLTIP_SHOW_DELAY = 180;
 const TOOLTIP_FADE_OUT = 360;
 const TOOLTIP_FADE_IN = 180;
 
-function getVisibleGroups(nodes, activeCategory) {
-  if (!activeCategory) {
+function getVisibleGroups(nodes, activeCategories) {
+  if (activeCategories.length === 0) {
     return null;
   }
 
   return new Set(
-    nodes.filter((node) => node.category === activeCategory || projectMatchesCategory(node.project || {}, activeCategory)).map((node) => node.group)
+    nodes
+      .filter((node) => activeCategories.some(
+        (category) => node.category === category || projectMatchesCategory(node.project || {}, category)
+      ))
+      .map((node) => node.group)
   );
 }
 
@@ -136,8 +140,8 @@ function seedNodesFromCenter(nodes) {
   });
 }
 
-function applyFilterState(graph, activeCategory) {
-  const visibleGroups = getVisibleGroups(graph.nodes || [], activeCategory);
+function applyFilterState(graph, activeCategories) {
+  const visibleGroups = getVisibleGroups(graph.nodes || [], activeCategories);
   const activeNodes = graph.nodes.filter((node) => isNodeVisible(node, visibleGroups));
   const activeLinks = graph.links.filter((linkItem) => isLinkVisible(linkItem, visibleGroups));
 
@@ -170,12 +174,12 @@ function applyFilterState(graph, activeCategory) {
   graph.simulation.alpha(1).alphaTarget(0).restart();
 }
 
-export function BouquetView({ activeCategory, projects, radius, aboutAnimation, aboutOpen, onDismissAbout, onSelect }) {
+export function BouquetView({ activeCategories, projects, radius, aboutAnimation, aboutOpen, onDismissAbout, onSelect }) {
   const svgRef = useRef(null);
   const tooltipRef = useRef(null);
   const graphRef = useRef(null);
   const aboutPointerRef = useRef(null);
-  const activeCategoryRef = useRef(activeCategory);
+  const activeCategoryRef = useRef(activeCategories);
   const { nodes, links } = useProjectGraph(projects);
 
   useEffect(() => {
@@ -508,14 +512,14 @@ export function BouquetView({ activeCategory, projects, radius, aboutAnimation, 
   }, [links, nodes, onSelect, radius]);
 
   useEffect(() => {
-    activeCategoryRef.current = activeCategory;
+    activeCategoryRef.current = activeCategories;
 
     if (!graphRef.current) {
       return;
     }
 
-    applyFilterState(graphRef.current, activeCategory);
-  }, [activeCategory]);
+    applyFilterState(graphRef.current, activeCategories);
+  }, [activeCategories]);
 
   useEffect(() => {
     if (!graphRef.current) {
