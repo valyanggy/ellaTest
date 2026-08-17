@@ -11,7 +11,7 @@ export function AboutPanel({ aboutOpen, disabled = false, onToggle }) {
         <span aria-hidden="true" className={aboutOpen ? "pr-1 text-[#e519e5]" : "hidden"}>
           *
         </span>
-        Ella Varr Burgess
+        Ella Varr
       </button>
     </section>
   );

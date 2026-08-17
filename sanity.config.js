@@ -8,7 +8,7 @@ const dataset = process.env.SANITY_STUDIO_DATASET || process.env.VITE_SANITY_DAT
 
 export default defineConfig({
   name: "ellaSite",
-  title: "Ella Varr Burgess",
+  title: "Ella Varr",
   projectId,
   dataset,
   plugins: [structureTool(), visionTool()],

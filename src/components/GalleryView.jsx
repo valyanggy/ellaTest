@@ -241,14 +241,16 @@ export function GalleryView({ activeCategory, allProjects, projects, selected, o
           onPointerDown={handleViewerPointerDown}
           onPointerUp={handleViewerPointerUp}
         >
-          <button
-            className="fixed left-7 top-[50px] z-20 flex h-[44px] w-[44px] cursor-pointer items-center justify-start border-0 bg-transparent p-0 font-kode text-[24px] leading-none text-black max-md:left-5"
-            type="button"
-            aria-label="Back to project view"
-            onClick={() => onSelect(null, null)}
-          >
-            ←
-          </button>
+          <div className="media-viewer-close-wrap pointer-events-none fixed left-7 top-16 z-20 flex w-[44px] items-center max-md:left-5">
+            <button
+              className="pointer-events-auto flex h-[44px] w-[44px] cursor-pointer items-center justify-start border-0 bg-transparent p-0 font-kode text-[20px] leading-none text-black"
+              type="button"
+              aria-label="Close detailed view"
+              onClick={() => onSelect(null, null)}
+            >
+              X
+            </button>
+          </div>
 
           <div ref={headingRef} className="media-viewer-heading fixed left-1/2 top-16 z-20 -translate-x-1/2 text-center font-kode text-[12px] font-normal leading-[1.15]">
             <div>{selectedItem.project.title}</div>
@@ -265,11 +267,13 @@ export function GalleryView({ activeCategory, allProjects, projects, selected, o
                 allowFullScreen
               />
             ) : (
-              <img
-                className="media-viewer-image max-w-full object-contain"
-                src={selectedItem.image.imageUrl}
-                alt={selectedItem.image.alt || selectedItem.image.title}
-              />
+              <div className="media-viewer-image-frame relative h-full w-full">
+                <img
+                  className="media-viewer-image absolute inset-0"
+                  src={selectedItem.image.imageUrl}
+                  alt={selectedItem.image.alt || selectedItem.image.title}
+                />
+              </div>
             )}
           </div>
 
