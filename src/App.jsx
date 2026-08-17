@@ -173,7 +173,7 @@ export function App() {
       {!introComplete ? (
         <section className="loader-screen fixed inset-0 z-[100] grid place-content-center gap-2 bg-white text-center">
           <span className="text-xs">Welcome to</span>
-          <strong className="font-junicode text-[34px] font-normal">Ella Varr Burgess</strong>
+          <strong className="font-junicode text-[34px] font-normal">Ella Varr</strong>
         </section>
       ) : (
         <div className="app-shell-fade">

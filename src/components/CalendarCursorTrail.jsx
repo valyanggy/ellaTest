@@ -5,7 +5,7 @@ const TRAIL_MIN_DISTANCE = 8;
 const TRAIL_MIN_INTERVAL = 12;
 const TRAIL_MIN_VELOCITY = 0.9;
 
-export function CalendarCursorTrail({ active }) {
+export function CalendarCursorTrail({ active, dotScale = 1, trailDurationMs = 680 }) {
   const containerRef = useRef(null);
   const cursorRef = useRef(null);
   const lastMoveRef = useRef({ time: 0, x: null, y: null });
@@ -53,13 +53,14 @@ export function CalendarCursorTrail({ active }) {
       lastTrailRef.current = { time: now, x: event.clientX, y: event.clientY };
 
       const dot = document.createElement("span");
-      const size = 6 + ((colorIndex % 4) * 2);
+      const size = (6 + ((colorIndex % 4) * 2)) * dotScale;
       dot.className = "calendar-cursor-trail-dot";
       dot.style.left = `${event.clientX}px`;
       dot.style.top = `${event.clientY}px`;
       dot.style.width = `${size}px`;
       dot.style.height = `${size}px`;
       dot.style.background = colorPalette[colorIndex % colorPalette.length];
+      dot.style.animationDuration = `${trailDurationMs}ms`;
       colorIndex += 1;
 
       container.appendChild(dot);
@@ -82,12 +83,17 @@ export function CalendarCursorTrail({ active }) {
       lastMoveRef.current = { time: 0, x: null, y: null };
       lastTrailRef.current = { time: 0, x: null, y: null };
     };
-  }, [active, colorPalette]);
+  }, [active, colorPalette, dotScale, trailDurationMs]);
 
   return (
     <>
       <div ref={containerRef} className="calendar-cursor-trail" aria-hidden="true" />
-      <span ref={cursorRef} className="calendar-custom-cursor" aria-hidden="true" />
+      <span
+        ref={cursorRef}
+        className="calendar-custom-cursor"
+        style={{ width: `${14 * dotScale}px`, height: `${14 * dotScale}px` }}
+        aria-hidden="true"
+      />
     </>
   );
 }

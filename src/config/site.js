@@ -58,7 +58,7 @@ export const ABOUT_PROFILE = {
     { name: "Val", url: "https://valyang.xyz/" },
     { name: "Alex", url: "https://www.alexsilva.wiki/" }
   ],
-  copyright: "©2026 ELLA VARR BURGESS",
+  copyright: "©2026 ELLA VARR",
   rights: "ALL RIGHTS RESERVED"
 };
 
