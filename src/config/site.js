@@ -30,7 +30,7 @@ export const GROUP_COLORS = [
 ];
 
 export const ABOUT_TEXT_LINES = [
-  "Ella Varr - a multimedia artist based in New York City.",
+  "Ella Varr - A multimedia artist based in New York City.",
   "A restless mind and her protean creation.",
   "ellavarr@gmail.com",
   "@varraway",
@@ -38,13 +38,13 @@ export const ABOUT_TEXT_LINES = [
 ];
 
 export const ABOUT_PROFILE = {
-  description: "Ella Varr - a multimedia artist based in New York City. A restless mind and her protean creation.",
+  description: "Ella Varr - A multimedia artist based in New York City. A restless mind and her protean creation.",
   descriptionLines: [
-    "Ella Varr - a multimedia artist based in New York City.",
+    "Ella Varr - A multimedia artist based in New York City.",
     "A restless mind and her protean creation."
   ],
   descriptionMobileLines: [
-    "Ella Varr - a multimedia artist",
+    "Ella Varr - A multimedia artist",
     "based in New York City. A restless",
     "mind and her protean creation."
   ],

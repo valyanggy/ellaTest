@@ -183,7 +183,7 @@ export function App() {
   return (
     <main className="min-h-screen bg-white">
       {!introComplete ? (
-        <section className="loader-screen fixed inset-0 z-[100] grid place-content-center gap-2 bg-white text-center">
+        <section className="loader-screen fixed inset-0 z-[100] grid place-content-center gap-2 bg-white text-center" data-nosnippet>
           <span className="text-xs">Welcome to</span>
           <strong className="font-junicode text-[34px] font-normal">Ella Varr</strong>
         </section>
@@ -192,7 +192,7 @@ export function App() {
           <AboutPanel aboutOpen={aboutOpen} onToggle={handleAboutToggle} />
           {!isImageOpen && <TopNav activeCategories={activeCategories} disabled={aboutOpen} onCategory={handleCategory} />}
           <AboutCenter aboutAnimation={aboutAnimation} aboutOpen={aboutOpen && view === "bouquet"} />
-          <div className="view-transition-plane">
+          <div className="view-transition-plane" data-nosnippet>
             <div className="view-content-transition" key={view}>
               {view === "bouquet" ? (
                 <BouquetView

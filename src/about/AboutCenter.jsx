@@ -80,7 +80,7 @@ export function AboutCenter({ aboutAnimation, aboutOpen }) {
           ))}
         </p>
 
-        <div className="about-copy about-contact-grid">
+        <div className="about-copy about-contact-grid" data-nosnippet>
           <p>
             <span>IG</span>
             <a href={ABOUT_PROFILE.instagramUrl}>{ABOUT_PROFILE.instagram}</a>
@@ -94,7 +94,7 @@ export function AboutCenter({ aboutAnimation, aboutOpen }) {
           </p>
         </div>
 
-        <p className="about-copy about-credit">
+        <p className="about-copy about-credit" data-nosnippet>
           <span>Site by:</span>
           <br />
           <strong>{ABOUT_PROFILE.credit}</strong>
@@ -106,7 +106,7 @@ export function AboutCenter({ aboutAnimation, aboutOpen }) {
         </p>
       </div>
 
-      <p className="about-copy about-rights fixed bottom-5 left-1/2 m-0 -translate-x-1/2 text-center">
+      <p className="about-copy about-rights fixed bottom-5 left-1/2 m-0 -translate-x-1/2 text-center" data-nosnippet>
         {ABOUT_PROFILE.copyright}
         <br />
         {ABOUT_PROFILE.rights}
